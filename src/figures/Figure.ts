@@ -1,5 +1,4 @@
-import Gravity from "../Forces/Gravity";
-import Point from "./Point";
+import { getGravityAcc } from "../Forces/Gravity";
 import Vector from "./Vector";
 
 export default abstract class Figure {
@@ -9,11 +8,11 @@ export default abstract class Figure {
 
   abstract draw(ctx: CanvasRenderingContext2D): void;
   abstract move(): void;
-  abstract intersect(objects: Figure[]): void;
+  abstract intersect(objects: Figure[], dt: number): void;
 
   public forces(dt: number) {
     if (this.mass !== Infinity) {
-      Gravity(this.vector, dt);
+      this.vector.add(0, getGravityAcc(dt));
     }
   }
 }

@@ -22,8 +22,8 @@ export const getLineIntersectionPoint = (l1: Line, l2: Line) => {
     y = (l1f.a * l2f.b - l1f.b * l2f.a) / (l1f.a - l2f.a);
   }
 
-  y = l2.point2.y;
-  
+  y = l2.point2.y; //todo fix vertical lines
+
   return new Point(x, y);
 };
 

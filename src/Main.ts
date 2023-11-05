@@ -4,7 +4,7 @@ import Line from "./figures/Line";
 import Point from "./figures/Point";
 
 let objects: Figure[] = [
-  new Circle(new Point(100, 500), 50, 10),
+  new Circle(new Point(100, 800), 50, 10),
   new Line(new Point(0, 1000), new Point(1700, 1000)),
 ];
 
@@ -17,7 +17,7 @@ const drawObjects = (ctx: CanvasRenderingContext2D) => {
 const moveObjects = (dt: number) => {
   objects.forEach((object) => {
     object.forces(dt);
-    object.intersect(objects);
+    object.intersect(objects, dt);
     object.move();
   });
 };

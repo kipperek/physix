@@ -1,6 +1,6 @@
+import { getGravityAcc } from "../Forces/Gravity";
 import {
   getIsPointBeetweenSection,
-  getLineFunction,
   getLineIntersectionPoint,
 } from "../helpers";
 import Figure from "./Figure";
@@ -10,7 +10,6 @@ import Point from "./Point";
 export default class Circle extends Figure {
   constructor(private p: Point, private h: number, mass: number) {
     super(mass, "circle");
-
   }
 
   move() {
@@ -24,28 +23,36 @@ export default class Circle extends Figure {
     ctx.fill();
   }
 
-  intersect(objects: Figure[]): void {
+  intersect(objects: Figure[], dt: number): void {
     objects.forEach((item) => {
       if (item === this) return;
 
       switch (item.figureType) {
         case "line":
-          this.lineIntersection(item as Line);
+          this.lineIntersection(item as Line, dt);
       }
     });
   }
 
-  lineIntersection = (line: Line) => {
-    const P1 = this.p;
+  lineIntersection = (line: Line, dt: number) => {
+    const P1 = new Point(this.p.x, this.p.y + this.h);
+
     const P2 = this.vector.getVectorPoint(P1);
 
     const vectorLine = new Line(P1, P2);
     const intersectionPoint = getLineIntersectionPoint(vectorLine, line);
-    console.log(getIsPointBeetweenSection(P1, P2, intersectionPoint));
 
-    
     if (getIsPointBeetweenSection(P1, P2, intersectionPoint)) {
       this.vector.reverse();
+
+      const gravity = getGravityAcc(dt);
+      if (this.vector.length < gravity) {
+        //todo remove last added force before bouncing
+        this.vector.stop();
+      } else {
+        this.vector.add(0, gravity);
+      }
+      //todo
     }
   };
 }

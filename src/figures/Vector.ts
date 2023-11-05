@@ -1,3 +1,4 @@
+import { getDistance } from "../helpers";
 import Point from "./Point";
 
 export default class Vector {
@@ -20,5 +21,9 @@ export default class Vector {
   public reverse() {
     this.deltaX = -this.deltaX;
     this.deltaY = -this.deltaY;
+  }
+
+  get length() {
+    return getDistance(new Point(0, 0), new Point(this.deltaX, this.deltaY));
   }
 }
